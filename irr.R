@@ -18,6 +18,11 @@ irr <- function(x, period = 1, starting.value = .01){
     if(sum(x.g.0) == 0) 
         stop("You have no positive cash flows. An IRR does not exist.")
     
+    ## making sure there are some negative cash flows ----
+    x.l.0 <- 1 * (x < 0)
+    if(sum(x.l.0) == 0) 
+        stop("You have no negative cash flows. An IRR does not exist.")
+
     if( num.changes > 1) {
 
         statement <- "Your cash flows change more than once -- so you may have multiple IRRs. This function will only return the first IRR it finds. To find the others, you can try different starting values.  However, note the IRR does not make sense if the signs change more than once (try Modified IRR or NPV)."
