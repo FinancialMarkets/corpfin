@@ -1,11 +1,11 @@
 ### IRR Function:  Takes a vector of payments and returns a list which includes the internal rate of return ($IRR) and possible word of warning ($beware) ----
 
-irr <- function(x, period = 1, starting.value = .1){
+irr <- function(x, period = 1, starting.value = .01){
 
 ### This should detect the number of sign changes.  Should correctly not warn if there are many negative cash flows (so long as there is only 1 change in sign).
     
     irr.func <- function(r){ ( sum(x / (1 + r)^{0:(length(x)-1)}) )^2 }
-    result <- optim(par = starting.value, fn = irr.func, method = "Brent", lower = -1000000, upper = 1000000)
+    result <- optim(par = starting.value, fn = irr.func, method = "SANN") #, lower = -1000000, upper = 1000000)
 
     ## detecting number of sign changes
     x.ge.0 <- 1 * (x >= 0)
@@ -26,4 +26,4 @@ irr <- function(x, period = 1, starting.value = .1){
     }
 }
 
-## TODO: If there is an initial cash outflow, and all other cash flows are negative, (really irrelevant sort of case) then the optimizer will return a maximum value. Add a check that there are at least some positive cash flows.
+## TODO: If there is an initial cash outflow, and all other cash flows are negative, (really irrelevant sort of case) then there is no solution. Add a check that there are at least some positive cash flows.
