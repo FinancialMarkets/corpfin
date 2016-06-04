@@ -12,6 +12,11 @@ irr <- function(x, period = 1, starting.value = .01){
     changes <- diff(x.ge.0)
     changes <- changes * changes
     num.changes <- sum(changes)
+
+    ## making sure there are some positive cash flows ----
+    x.g.0 <- 1 * (x > 0)
+    if(sum(x.g.0) == 0) 
+        stop("You have no positive cash flows. An IRR does not exist.")
     
     if( num.changes > 1) {
 
@@ -25,5 +30,3 @@ irr <- function(x, period = 1, starting.value = .01){
 
     }
 }
-
-## TODO: If there is an initial cash outflow, and all other cash flows are negative, (really irrelevant sort of case) then there is no solution. Add a check that there are at least some positive cash flows.
